@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-
-const Board = () => ({
-    winner: null,
-    winningLine: null,
-    squares: new Array(9).fill(null),
-});
+import { Board, isValidMove, getWinner } from './helpers';
 
 class App extends Component {
 
@@ -20,22 +15,26 @@ class App extends Component {
     token: 'x',
   }
 
-  winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+
 
   take = (iBoard, iSquare, token) => {
     let board = this.state.board[ iBoard ];
     let square = board.squares[ iSquare ];
     const { activeBoard } = this.state;
 
-    // IF: either square or board.winner are not null, then disallow take
-    const playableBoard = board.winner === null && (activeBoard === iBoard || activeBoard < 0);
-    const playableSquare = square === null;
-    if(!playableSquare || !playableBoard) {
+    if(!isValidMove(board, activeBoard, iBoard, square)) {
       return false;
     }
 
+    // the space is available and the board is unwon, so let's update state
     let newBoard = [...this.state.board];
     newBoard[ iBoard ].squares[ iSquare ] = token;
+
+    let result = getWinner(board, token);
+    if(result.winner) {
+      newBoard[ iBoard ].winner = result.winner;
+      newBoard[ iBoard ].winningLine = result.winningLine;
+    }
 
     this.setState(state => ({
       board: newBoard,
