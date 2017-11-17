@@ -17,3 +17,10 @@ In this version, you're actually playing 10 games of tic-tac-toe simultaneously.
 * If a mini-board results in a tie, that space cannot be used by either player to win the game.
 * Alternatively, a tie on the mini-board could be used by both players.
 
+## NOTES
+
+* This is a work in progress (WIP)
+* Known issues
+    * No UI
+    * Not yet scoring the big board
+
